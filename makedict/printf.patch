@@ -1,0 +1,57 @@
+diff --git a/src/dictd_parser.cpp b/src/dictd_parser.cpp
+index 6dae42e..1062e80 100644
+--- a/src/dictd_parser.cpp
++++ b/src/dictd_parser.cpp
+@@ -23,10 +23,10 @@
+ #  include "config.h"
+ #endif
+ 
++#include <glib/gi18n.h>
+ #include <cerrno>
+ #include <cstring>
+ #include <cstdio>
+-#include <glib/gi18n.h>
+ #include <vector>
+ 
+ #include "charset_conv.hpp"
+@@ -35,6 +35,17 @@
+ 
+ #include "parser.hpp"
+ 
++/* Msys/mingw printf problem:
++   libintl defines macro printf which messes with our File::printf function.
++   It seems to me, that it happens after including glib/gil8n.h
++   On the other hand it is reset by cstdio header, so I changed the order
++   of includes, so that cstdio come after gil8n.h
++   Let's make sure our printf will not get remapped to __printf__
++   which would result in undefined reference.
++   Jarek Czekalski, 2013 Jun 19 */
++#ifdef printf
++  #warning "printf redefined, possible linking problems"
++#endif
+ 
+ //#define DEBUG
+ namespace dictd {
+diff --git a/src/stardict_generator.cpp b/src/stardict_generator.cpp
+index 1a6c092..dcc80b5 100644
+--- a/src/stardict_generator.cpp
++++ b/src/stardict_generator.cpp
+@@ -27,14 +27,14 @@
+ #  include "config.h"
+ #endif
+ 
+-#include <cerrno>
+-#include <cstdio>
+-#include <cstdlib>
+-#include <cstring>
+ #include <glib/gi18n.h>
+ #include <glib.h>
+ #include <sys/stat.h>
+ #include <sys/types.h>
++#include <cerrno>
++#include <cstdio>
++#include <cstdlib>
++#include <cstring>
+ #include <vector>
+ #include <algorithm>
+ 

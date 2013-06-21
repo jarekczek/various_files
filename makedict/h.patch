@@ -1,0 +1,22 @@
+commit e59e7841c43fc1b3a86107bfe4f6c423663d52c0
+Author: Jarek Czekalski <jarekczek@poczta.onet.pl>
+Date:   Fri Jun 21 17:37:48 2013 +0200
+
+    stardict parser: simple support for h format.
+      It turns out that html may be passed directly into xdxf.
+
+diff --git a/src/stardict_parser.cpp b/src/stardict_parser.cpp
+index b35ddfc..fe4e2f4 100644
+--- a/src/stardict_parser.cpp
++++ b/src/stardict_parser.cpp
+@@ -113,6 +113,10 @@ void DictData::convert_to_xdxf(char data_type, const char *&beg,
+ 		sec_size = end - beg;
+ 
+ 	switch (data_type) {
++	case 'h': {
++		res.append(beg, sec_size);
++	}
++		break;
+ 	case 'm': {
+ 		std::string tmp;
+ 		xml::encode(std::string(beg, sec_size), tmp);
